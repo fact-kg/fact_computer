@@ -1,0 +1,7 @@
+- is: OS domain
+- has:
+    node:
+      type: computer/com/ualink/system_node
+- has:
+    os:
+      type: computer/os/operating_system
