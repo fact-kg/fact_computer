@@ -1,0 +1,7 @@
+- is: LaTeX math operator
+- has:
+    symbol:
+      type: str
+- has:
+    style:
+      type: str

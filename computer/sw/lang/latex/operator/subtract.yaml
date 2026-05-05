@@ -1,0 +1,8 @@
+- is:
+    type: computer/sw/lang/latex/operator
+    as:
+      - computer/sw/lang/latex/operator:
+          symbol:
+            value: "-"
+          style:
+            value: "infix"
