@@ -1,0 +1,11 @@
+- is:
+    type: computer/algorithm/step
+- has:
+    condition:
+      type: math/operation
+- has:
+    condition_args:
+      type: list
+- has:
+    then:
+      type: str

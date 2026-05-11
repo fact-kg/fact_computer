@@ -1,0 +1,14 @@
+- is:
+    type: computer/algorithm/step
+- has:
+    index:
+      type: str
+- has:
+    from:
+      type: num
+- has:
+    to_length:
+      type: str
+- has:
+    body:
+      type: str

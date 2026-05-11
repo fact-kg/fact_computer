@@ -1,0 +1,5 @@
+- is:
+    type: computer/algorithm/step
+- has:
+    variable:
+      type: str

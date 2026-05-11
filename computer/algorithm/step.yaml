@@ -1,0 +1,4 @@
+- is: algorithm step
+- has:
+    next:
+      type: str

@@ -1,0 +1,65 @@
+- is:
+    type: computer/algorithm
+- has:
+    description:
+      type: str
+      value: "Find maximum element in an array"
+- has:
+    input_array:
+      type: list
+- has:
+    result:
+      type: math/variable
+- has:
+    step_init:
+      type: computer/algorithm/assign
+      as:
+        - computer/algorithm/assign:
+            variable:
+              value: result
+            from:
+              value: "input_array[0]"
+            next:
+              value: step_loop
+- has:
+    step_loop:
+      type: computer/algorithm/indexed/for_each
+      as:
+        - computer/algorithm/indexed/for_each:
+            index:
+              value: i
+            from:
+              value: 1
+            to_length:
+              value: input_array
+            body:
+              value: step_compare
+            next:
+              value: step_return
+- has:
+    step_compare:
+      type: computer/algorithm/if
+      as:
+        - computer/algorithm/if:
+            condition:
+              value: math/algebra/operation/greater_than
+            condition_args:
+              value: ["input_array[i]", "result"]
+            then:
+              value: step_update
+- has:
+    step_update:
+      type: computer/algorithm/assign
+      as:
+        - computer/algorithm/assign:
+            variable:
+              value: result
+            from:
+              value: "input_array[i]"
+- has:
+    step_return:
+      type: computer/algorithm/return
+      as:
+        - computer/algorithm/return:
+            variable:
+              value: result
