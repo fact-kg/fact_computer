@@ -1,0 +1,27 @@
+- is:
+    type: computer/algorithm
+- has:
+    description:
+      type: str
+      value: "Evaluate a mathematical expression and return result"
+- has:
+    expression_fact:
+      type: str
+- has:
+    step_evaluate:
+      type: computer/algorithm/evaluate_expression
+      as:
+        - computer/algorithm/evaluate_expression:
+            expression:
+              value: expression_fact
+            result_variable:
+              value: result
+            next:
+              value: step_return
+- has:
+    step_return:
+      type: computer/algorithm/return
+      as:
+        - computer/algorithm/return:
+            variable:
+              value: result
