@@ -1,0 +1,14 @@
+- is:
+    type: computer/test/case
+    as:
+      - computer/test/case:
+          description:
+            value: "Single element array"
+          subject:
+            value: computer/algorithm/array/find_max
+          expected_result:
+            value: 42
+- has:
+    input_array:
+      type: list
+      value: [42]

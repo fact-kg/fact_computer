@@ -1,0 +1,14 @@
+- is:
+    type: computer/test/case
+    as:
+      - computer/test/case:
+          description:
+            value: "Array with negative numbers"
+          subject:
+            value: computer/algorithm/array/find_max
+          expected_result:
+            value: -1
+- has:
+    input_array:
+      type: list
+      value: [-5, -3, -1, -7, -2]

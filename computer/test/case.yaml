@@ -1,0 +1,10 @@
+- is: test case
+- has:
+    description:
+      type: str
+- has:
+    subject:
+      type: str
+- has:
+    expected_result:
+      type: num

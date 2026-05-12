@@ -1,0 +1,14 @@
+- is:
+    type: computer/test/case
+    as:
+      - computer/test/case:
+          description:
+            value: "Basic case with positive numbers"
+          subject:
+            value: computer/algorithm/array/find_max
+          expected_result:
+            value: 9
+- has:
+    input_array:
+      type: list
+      value: [3, 1, 4, 1, 5, 9, 2, 6]

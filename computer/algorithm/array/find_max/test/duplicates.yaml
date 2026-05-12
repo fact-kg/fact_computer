@@ -1,0 +1,14 @@
+- is:
+    type: computer/test/case
+    as:
+      - computer/test/case:
+          description:
+            value: "Array with duplicate maximum"
+          subject:
+            value: computer/algorithm/array/find_max
+          expected_result:
+            value: 7
+- has:
+    input_array:
+      type: list
+      value: [7, 3, 7, 2, 5]
