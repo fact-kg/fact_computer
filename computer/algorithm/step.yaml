@@ -2,3 +2,6 @@
 - has:
     next:
       type: str
+- has:
+    description:
+      type: str

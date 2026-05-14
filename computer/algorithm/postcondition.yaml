@@ -1,0 +1,4 @@
+- is: algorithm postcondition constraint
+- has:
+    condition:
+      type: str

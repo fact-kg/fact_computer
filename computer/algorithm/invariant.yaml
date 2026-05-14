@@ -1,0 +1,4 @@
+- is: loop invariant constraint
+- has:
+    condition:
+      type: str

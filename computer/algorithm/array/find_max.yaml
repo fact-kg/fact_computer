@@ -10,11 +10,31 @@
 - has:
     result:
       type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "the maximum element found so far"
+- has:
+    precondition:
+      type: computer/algorithm/precondition
+      as:
+        - computer/algorithm/precondition:
+            condition:
+              value: "len(input_array) > 0"
+- has:
+    postcondition:
+      type: computer/algorithm/postcondition
+      as:
+        - computer/algorithm/postcondition:
+            condition:
+              value: "result in input_array AND for all e in input_array: result >= e"
 - has:
     step_init:
       type: computer/algorithm/assign
       as:
         - computer/algorithm/assign:
+            description:
+              value: "initialize result with first element"
             variable:
               value: result
             from:
@@ -26,6 +46,8 @@
       type: computer/algorithm/indexed/for_each
       as:
         - computer/algorithm/indexed/for_each:
+            description:
+              value: "iterate over remaining elements"
             index:
               value: i
             from:
@@ -37,10 +59,19 @@
             next:
               value: step_return
 - has:
+    loop_invariant:
+      type: computer/algorithm/invariant
+      as:
+        - computer/algorithm/invariant:
+            condition:
+              value: "result in input_array[0..i] AND for all e in input_array[0..i]: result >= e"
+- has:
     step_compare:
       type: computer/algorithm/if
       as:
         - computer/algorithm/if:
+            description:
+              value: "check if current element is greater than result"
             condition:
               value: math/algebra/operation/greater_than
             condition_args:
@@ -52,6 +83,8 @@
       type: computer/algorithm/assign
       as:
         - computer/algorithm/assign:
+            description:
+              value: "update result with new maximum"
             variable:
               value: result
             from:
@@ -61,5 +94,7 @@
       type: computer/algorithm/return
       as:
         - computer/algorithm/return:
+            description:
+              value: "return the maximum element"
             variable:
               value: result
