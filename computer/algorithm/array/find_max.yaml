@@ -22,6 +22,26 @@
             description:
               value: "the maximum element found so far"
 - has:
+    rationale:
+      type: computer/algorithm/rationale
+      as:
+        - computer/algorithm/rationale:
+            rationale_yaml:
+              value: |
+                understanding:
+                  problem: "find the largest element in a collection"
+                  constraints: ["can compare two elements", "linear access to elements"]
+                planning:
+                  observation: "if I've seen all elements, I know which is largest"
+                  insight: "keep track of the largest seen so far, update when a larger one appears"
+                  question: "what is the initial value of the tracker?"
+                  conclusion: "use the first element, then scan the rest"
+                alternatives:
+                  - name: "sort then take last"
+                    tradeoff: "correct but O(n log n) instead of O(n)"
+                  - name: "tournament/tree comparison"
+                    tradeoff: "same O(n) but uses more memory"
+- has:
     precondition:
       type: computer/algorithm/precondition
       as:

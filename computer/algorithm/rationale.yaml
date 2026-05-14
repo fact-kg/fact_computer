@@ -1,0 +1,4 @@
+- is: algorithm design rationale
+- has:
+    rationale_yaml:
+      type: str

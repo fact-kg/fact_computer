@@ -43,6 +43,28 @@
             description:
               value: "temporary storage for swap"
 - has:
+    rationale:
+      type: computer/algorithm/rationale
+      as:
+        - computer/algorithm/rationale:
+            rationale_yaml:
+              value: |
+                understanding:
+                  problem: "sort elements in ascending order"
+                  constraints: ["can compare two elements", "can swap adjacent elements"]
+                planning:
+                  observation: "comparing adjacent elements and swapping is the simplest operation"
+                  insight: "one pass bubbles the largest element to the end"
+                  question: "does one pass suffice?"
+                  conclusion: "no, each pass fixes one element, repeat n times"
+                alternatives:
+                  - name: "selection sort"
+                    tradeoff: "fewer swaps but same O(n^2) comparisons"
+                  - name: "insertion sort"
+                    tradeoff: "better on nearly sorted data, same worst case"
+                  - name: "merge sort"
+                    tradeoff: "O(n log n) but needs O(n) extra memory"
+- has:
     precondition:
       type: computer/algorithm/precondition
       as:
