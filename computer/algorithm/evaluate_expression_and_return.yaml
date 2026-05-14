@@ -9,10 +9,10 @@
       type: str
 - has:
     step_evaluate:
-      type: computer/algorithm/evaluate_expression
+      type: computer/algorithm/evaluate_expression_fact
       as:
-        - computer/algorithm/evaluate_expression:
-            expression:
+        - computer/algorithm/evaluate_expression_fact:
+            expression_fact:
               value: expression_fact
             result_variable:
               value: result

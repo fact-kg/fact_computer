@@ -4,17 +4,11 @@
     description:
       type: str
 - has:
+    container:
+      type: str
+- has:
     index:
       type: str
 - has:
     from:
-      type: num
-- has:
-    to:
-      type: str
-- has:
-    to_length:
-      type: str
-- has:
-    body:
       type: str

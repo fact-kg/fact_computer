@@ -1,0 +1,14 @@
+- is:
+    type: computer/test/case
+    as:
+      - computer/test/case:
+          description:
+            value: "Single element array"
+          subject:
+            value: computer/algorithm/array/bubble_sort
+          expected_result:
+            value: [42]
+- has:
+    array:
+      type: list
+      value: [42]

@@ -4,17 +4,8 @@
     description:
       type: str
 - has:
-    index:
+    expression_fact:
       type: str
 - has:
-    from:
-      type: num
-- has:
-    to:
-      type: str
-- has:
-    to_length:
-      type: str
-- has:
-    body:
+    result_variable:
       type: str

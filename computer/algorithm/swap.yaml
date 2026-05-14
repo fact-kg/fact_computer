@@ -4,17 +4,11 @@
     description:
       type: str
 - has:
-    index:
+    array:
       type: str
 - has:
-    from:
-      type: num
-- has:
-    to:
+    index_a:
       type: str
 - has:
-    to_length:
-      type: str
-- has:
-    body:
+    index_b:
       type: str

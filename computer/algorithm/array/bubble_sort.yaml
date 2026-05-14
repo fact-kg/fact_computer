@@ -1,0 +1,151 @@
+- is:
+    type: computer/algorithm
+- has:
+    description:
+      type: str
+      value: "Sort array in ascending order using bubble sort"
+- has:
+    array:
+      type: list
+- has:
+    precondition:
+      type: computer/algorithm/precondition
+      as:
+        - computer/algorithm/precondition:
+            condition:
+              value: "len(array) > 0"
+- has:
+    postcondition:
+      type: computer/algorithm/postcondition
+      as:
+        - computer/algorithm/postcondition:
+            condition:
+              value: "for all i in 0..len(array)-1: array[i] <= array[i+1]"
+- has:
+    step_init:
+      type: computer/algorithm/evaluate_expression
+      as:
+        - computer/algorithm/evaluate_expression:
+            description:
+              value: "compute inner loop upper bound"
+            expression_yaml:
+              value: |
+                math/algebra/operation/subtract:
+                  - math/algebra/operation/length:
+                      - array
+                  - 2
+            result_variable:
+              value: inner_bound
+            next:
+              value: step_outer_loop
+- has:
+    step_outer_loop:
+      type: computer/algorithm/indexed/for_each
+      as:
+        - computer/algorithm/indexed/for_each:
+            description:
+              value: "repeat passes over the array"
+            index:
+              value: i
+            from:
+              value: 0
+            to_length:
+              value: array
+            body:
+              value: step_inner_loop
+            next:
+              value: step_return
+- has:
+    step_inner_loop:
+      type: computer/algorithm/indexed/for_each
+      as:
+        - computer/algorithm/indexed/for_each:
+            description:
+              value: "compare adjacent elements"
+            index:
+              value: j
+            from:
+              value: 0
+            to:
+              value: inner_bound
+            body:
+              value: step_compute_j_next
+- has:
+    step_compute_j_next:
+      type: computer/algorithm/evaluate_expression
+      as:
+        - computer/algorithm/evaluate_expression:
+            description:
+              value: "compute next index"
+            expression_yaml:
+              value: |
+                math/algebra/operation/add:
+                  - j
+                  - 1
+            result_variable:
+              value: j_next
+            next:
+              value: step_compare
+- has:
+    step_compare:
+      type: computer/algorithm/if
+      as:
+        - computer/algorithm/if:
+            description:
+              value: "check if adjacent elements are out of order"
+            condition:
+              value: math/algebra/operation/greater_than
+            condition_args:
+              value: ["array[j]", "array[j_next]"]
+            then:
+              value: step_save_temp
+- has:
+    step_save_temp:
+      type: computer/algorithm/assign
+      as:
+        - computer/algorithm/assign:
+            description:
+              value: "save element before swap"
+            variable:
+              value: temp
+            from:
+              value: "array[j]"
+            next:
+              value: step_copy_next
+- has:
+    step_copy_next:
+      type: computer/algorithm/assign_indexed
+      as:
+        - computer/algorithm/assign_indexed:
+            description:
+              value: "copy next element to current position"
+            container:
+              value: array
+            index:
+              value: j
+            from:
+              value: "array[j_next]"
+            next:
+              value: step_restore
+- has:
+    step_restore:
+      type: computer/algorithm/assign_indexed
+      as:
+        - computer/algorithm/assign_indexed:
+            description:
+              value: "restore saved element to next position"
+            container:
+              value: array
+            index:
+              value: j_next
+            from:
+              value: temp
+- has:
+    step_return:
+      type: computer/algorithm/return
+      as:
+        - computer/algorithm/return:
+            description:
+              value: "return sorted array"
+            variable:
+              value: array

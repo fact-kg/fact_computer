@@ -1,7 +1,10 @@
 - is:
     type: computer/algorithm/step
 - has:
-    expression:
+    description:
+      type: str
+- has:
+    expression_yaml:
       type: str
 - has:
     result_variable:
