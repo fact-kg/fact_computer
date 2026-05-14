@@ -8,6 +8,13 @@
     input_array:
       type: list
 - has:
+    i:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "loop index"
+- has:
     result:
       type: math/variable
       as:

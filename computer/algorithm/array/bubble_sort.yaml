@@ -8,6 +8,41 @@
     array:
       type: list
 - has:
+    i:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "outer loop index"
+- has:
+    j:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "inner loop index"
+- has:
+    inner_bound:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "upper bound for inner loop, shrinks each pass"
+- has:
+    j_next:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "index of next adjacent element"
+- has:
+    temp:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "temporary storage for swap"
+- has:
     precondition:
       type: computer/algorithm/precondition
       as:
@@ -20,24 +55,7 @@
       as:
         - computer/algorithm/postcondition:
             condition:
-              value: "for all i in 0..len(array)-1: array[i] <= array[i+1]"
-- has:
-    step_init:
-      type: computer/algorithm/evaluate_expression
-      as:
-        - computer/algorithm/evaluate_expression:
-            description:
-              value: "compute inner loop upper bound"
-            expression_yaml:
-              value: |
-                math/algebra/operation/subtract:
-                  - math/algebra/operation/length:
-                      - array
-                  - 2
-            result_variable:
-              value: inner_bound
-            next:
-              value: step_outer_loop
+              value: "for all i in 0..len(array)-2: array[i] <= array[i+1]"
 - has:
     step_outer_loop:
       type: computer/algorithm/indexed/for_each
@@ -52,9 +70,28 @@
             to_length:
               value: array
             body:
-              value: step_inner_loop
+              value: step_compute_inner_bound
             next:
               value: step_return
+- has:
+    step_compute_inner_bound:
+      type: computer/algorithm/evaluate_expression
+      as:
+        - computer/algorithm/evaluate_expression:
+            description:
+              value: "compute inner loop upper bound: len(array) - i - 2"
+            expression_yaml:
+              value: |
+                math/algebra/operation/subtract:
+                  - math/algebra/operation/subtract:
+                      - math/algebra/operation/length:
+                          - array
+                      - i
+                  - 2
+            result_variable:
+              value: inner_bound
+            next:
+              value: step_inner_loop
 - has:
     step_inner_loop:
       type: computer/algorithm/indexed/for_each
