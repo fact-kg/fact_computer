@@ -1,0 +1,124 @@
+- is:
+    type: computer/algorithm
+- has:
+    description:
+      type: str
+      value: "Find index of minimum element in array slice"
+- has:
+    input:
+      type: computer/sw/adt/slice
+- has:
+    min_idx:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "index of minimum element found so far"
+- has:
+    j:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "loop index"
+- has:
+    scan_from:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "start of scan range, one past initial min_idx"
+- has:
+    precondition:
+      type: computer/algorithm/precondition
+      as:
+        - computer/algorithm/precondition:
+            condition:
+              value: "input.from < input.to AND input.to <= len(input.array)"
+- has:
+    postcondition:
+      type: computer/algorithm/postcondition
+      as:
+        - computer/algorithm/postcondition:
+            condition:
+              value: "for all j in input.from..input.to: input.array[min_idx] <= input.array[j]"
+- has:
+    step_init:
+      type: computer/algorithm/assign
+      as:
+        - computer/algorithm/assign:
+            description:
+              value: "start with first element as minimum"
+            variable:
+              value: min_idx
+            from:
+              value: "input.from"
+            next:
+              value: step_compute_scan_from
+- has:
+    step_compute_scan_from:
+      type: computer/algorithm/evaluate_expression
+      as:
+        - computer/algorithm/evaluate_expression:
+            description:
+              value: "compute scan start"
+            expression_yaml:
+              value: |
+                math/algebra/operation/add:
+                  - input.from
+                  - 1
+            result_variable:
+              value: scan_from
+            next:
+              value: step_loop
+- has:
+    step_loop:
+      type: computer/algorithm/indexed/for_each
+      as:
+        - computer/algorithm/indexed/for_each:
+            description:
+              value: "scan remaining elements"
+            index:
+              value: j
+            from:
+              value: scan_from
+            to:
+              value: input.to
+            body:
+              value: step_compare
+            next:
+              value: step_return
+- has:
+    step_compare:
+      type: computer/algorithm/if
+      as:
+        - computer/algorithm/if:
+            description:
+              value: "check if current element is smaller"
+            condition_yaml:
+              value: |
+                math/algebra/operation/less_than:
+                  - input.array[j]
+                  - input.array[min_idx]
+            then:
+              value: step_update
+- has:
+    step_update:
+      type: computer/algorithm/assign
+      as:
+        - computer/algorithm/assign:
+            description:
+              value: "update minimum index"
+            variable:
+              value: min_idx
+            from:
+              value: j
+- has:
+    step_return:
+      type: computer/algorithm/return
+      as:
+        - computer/algorithm/return:
+            description:
+              value: "return index of minimum element"
+            variable:
+              value: min_idx

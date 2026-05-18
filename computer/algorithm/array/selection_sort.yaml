@@ -1,0 +1,176 @@
+- is:
+    type: computer/algorithm
+- has:
+    description:
+      type: str
+      value: "Sort array in ascending order using selection sort"
+- has:
+    array:
+      type: list
+- has:
+    i:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "outer loop index, boundary of sorted portion"
+- has:
+    min_idx:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "index of minimum element in unsorted portion"
+- has:
+    array_len:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "length of array"
+- has:
+    temp:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "temporary storage for swap"
+- has:
+    precondition:
+      type: computer/algorithm/precondition
+      as:
+        - computer/algorithm/precondition:
+            condition:
+              value: "len(array) > 0"
+- has:
+    postcondition:
+      type: computer/algorithm/postcondition
+      as:
+        - computer/algorithm/postcondition:
+            condition:
+              value: "for all i in 0..len(array)-2: array[i] <= array[i+1]"
+- has:
+    rationale:
+      type: computer/algorithm/rationale
+      as:
+        - computer/algorithm/rationale:
+            rationale_yaml:
+              value: |
+                understanding:
+                  problem: "sort elements in ascending order"
+                  constraints: ["can compare two elements", "can swap elements"]
+                planning:
+                  observation: "if we find the minimum and place it first, first position is sorted"
+                  insight: "repeat for remaining positions, each time finding the minimum of the unsorted portion"
+                  question: "how to find minimum efficiently?"
+                  conclusion: "use find_min_index subroutine"
+                alternatives:
+                  - name: "bubble sort"
+                    tradeoff: "more swaps, same O(n^2)"
+                  - name: "insertion sort"
+                    tradeoff: "better on nearly sorted data"
+- has:
+    step_init:
+      type: computer/algorithm/evaluate_expression
+      as:
+        - computer/algorithm/evaluate_expression:
+            description:
+              value: "compute array length"
+            expression_yaml:
+              value: |
+                math/algebra/operation/length:
+                  - array
+            result_variable:
+              value: array_len
+            next:
+              value: step_outer_loop
+- has:
+    step_outer_loop:
+      type: computer/algorithm/indexed/for_each
+      as:
+        - computer/algorithm/indexed/for_each:
+            description:
+              value: "iterate over each position"
+            index:
+              value: i
+            from:
+              value: 0
+            to_length:
+              value: array
+            body:
+              value: step_find_min
+            next:
+              value: step_return
+- has:
+    step_find_min:
+      type: computer/algorithm/call
+      as:
+        - computer/algorithm/call:
+            description:
+              value: "find minimum in unsorted portion"
+            algorithm:
+              value: computer/algorithm/array/find_min_index
+            result_variable:
+              value: min_idx
+            next:
+              value: step_swap_save
+        - computer/algorithm/array/find_min_index:
+            input:
+              as:
+                - computer/sw/adt/slice:
+                    array:
+                      value: array
+                    from:
+                      value: i
+                    to:
+                      value: array_len
+- has:
+    step_swap_save:
+      type: computer/algorithm/assign
+      as:
+        - computer/algorithm/assign:
+            description:
+              value: "save element at current position"
+            variable:
+              value: temp
+            from:
+              value: "array[i]"
+            next:
+              value: step_swap_move
+- has:
+    step_swap_move:
+      type: computer/algorithm/assign_indexed
+      as:
+        - computer/algorithm/assign_indexed:
+            description:
+              value: "move minimum to current position"
+            container:
+              value: array
+            index:
+              value: i
+            from:
+              value: "array[min_idx]"
+            next:
+              value: step_swap_restore
+- has:
+    step_swap_restore:
+      type: computer/algorithm/assign_indexed
+      as:
+        - computer/algorithm/assign_indexed:
+            description:
+              value: "place saved element at min position"
+            container:
+              value: array
+            index:
+              value: min_idx
+            from:
+              value: temp
+- has:
+    step_return:
+      type: computer/algorithm/return
+      as:
+        - computer/algorithm/return:
+            description:
+              value: "return sorted array"
+            variable:
+              value: array

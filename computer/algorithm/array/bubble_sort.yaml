@@ -101,7 +101,7 @@
       as:
         - computer/algorithm/evaluate_expression:
             description:
-              value: "compute inner loop upper bound: len(array) - i - 2"
+              value: "compute inner loop upper bound: len(array) - i - 1"
             expression_yaml:
               value: |
                 math/algebra/operation/subtract:
@@ -109,7 +109,7 @@
                       - math/algebra/operation/length:
                           - array
                       - i
-                  - 2
+                  - 1
             result_variable:
               value: inner_bound
             next:

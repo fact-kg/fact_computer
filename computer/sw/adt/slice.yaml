@@ -1,0 +1,10 @@
+- is: array slice
+- has:
+    array:
+      type: list
+- has:
+    from:
+      type: num
+- has:
+    to:
+      type: num

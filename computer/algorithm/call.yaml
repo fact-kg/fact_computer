@@ -1,0 +1,11 @@
+- is:
+    type: computer/algorithm/step
+- has:
+    description:
+      type: str
+- has:
+    algorithm:
+      type: str
+- has:
+    result_variable:
+      type: str
