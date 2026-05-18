@@ -99,10 +99,11 @@
         - computer/algorithm/if:
             description:
               value: "check if current element is greater than result"
-            condition:
-              value: math/algebra/operation/greater_than
-            condition_args:
-              value: ["input_array[i]", "result"]
+            condition_yaml:
+              value: |
+                math/algebra/operation/greater_than:
+                  - input_array[i]
+                  - result
             then:
               value: step_update
 - has:

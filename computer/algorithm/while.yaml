@@ -7,5 +7,5 @@
     condition_yaml:
       type: str
 - has:
-    then:
+    body:
       type: str

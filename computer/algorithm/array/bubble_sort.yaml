@@ -152,10 +152,11 @@
         - computer/algorithm/if:
             description:
               value: "check if adjacent elements are out of order"
-            condition:
-              value: math/algebra/operation/greater_than
-            condition_args:
-              value: ["array[j]", "array[j_next]"]
+            condition_yaml:
+              value: |
+                math/algebra/operation/greater_than:
+                  - array[j]
+                  - array[j_next]
             then:
               value: step_save_temp
 - has:

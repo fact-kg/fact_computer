@@ -1,0 +1,220 @@
+- is:
+    type: computer/algorithm
+- has:
+    description:
+      type: str
+      value: "Sort array in ascending order using insertion sort"
+- has:
+    array:
+      type: list
+- has:
+    i:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "outer loop index, current element to insert"
+- has:
+    key:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "element being inserted into sorted portion"
+- has:
+    j:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "inner loop index, scans sorted portion right to left"
+- has:
+    j_plus_1:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "position to place shifted element"
+- has:
+    precondition:
+      type: computer/algorithm/precondition
+      as:
+        - computer/algorithm/precondition:
+            condition:
+              value: "len(array) > 0"
+- has:
+    postcondition:
+      type: computer/algorithm/postcondition
+      as:
+        - computer/algorithm/postcondition:
+            condition:
+              value: "for all i in 0..len(array)-2: array[i] <= array[i+1]"
+- has:
+    rationale:
+      type: computer/algorithm/rationale
+      as:
+        - computer/algorithm/rationale:
+            rationale_yaml:
+              value: |
+                understanding:
+                  problem: "sort elements in ascending order"
+                  constraints: ["can compare two elements", "can shift elements"]
+                planning:
+                  observation: "a single element is always sorted"
+                  insight: "take next unsorted element, insert it into correct position in sorted portion"
+                  question: "how to find the correct position?"
+                  conclusion: "shift larger elements right until correct spot found"
+                alternatives:
+                  - name: "bubble sort"
+                    tradeoff: "simpler but more swaps, same O(n^2)"
+                  - name: "merge sort"
+                    tradeoff: "O(n log n) but needs extra memory"
+- has:
+    step_outer_loop:
+      type: computer/algorithm/indexed/for_each
+      as:
+        - computer/algorithm/indexed/for_each:
+            description:
+              value: "iterate over unsorted portion"
+            index:
+              value: i
+            from:
+              value: 1
+            to_length:
+              value: array
+            body:
+              value: step_save_key
+            next:
+              value: step_return
+- has:
+    step_save_key:
+      type: computer/algorithm/assign
+      as:
+        - computer/algorithm/assign:
+            description:
+              value: "save current element to insert"
+            variable:
+              value: key
+            from:
+              value: "array[i]"
+            next:
+              value: step_init_j
+- has:
+    step_init_j:
+      type: computer/algorithm/evaluate_expression
+      as:
+        - computer/algorithm/evaluate_expression:
+            description:
+              value: "start scanning from element before current"
+            expression_yaml:
+              value: |
+                math/algebra/operation/subtract:
+                  - i
+                  - 1
+            result_variable:
+              value: j
+            next:
+              value: step_shift_loop
+- has:
+    step_shift_loop:
+      type: computer/algorithm/while
+      as:
+        - computer/algorithm/while:
+            description:
+              value: "j >= 0 and array[j] > key"
+            condition_yaml:
+              value: |
+                math/algebra/operation/and:
+                  - math/algebra/operation/greater_equal:
+                      - j
+                      - 0
+                  - math/algebra/operation/greater_than:
+                      - array[j]
+                      - key
+            body:
+              value: step_shift_element
+            next:
+              value: step_place_key
+- has:
+    step_shift_element:
+      type: computer/algorithm/evaluate_expression
+      as:
+        - computer/algorithm/evaluate_expression:
+            description:
+              value: "compute j + 1 for placement"
+            expression_yaml:
+              value: |
+                math/algebra/operation/add:
+                  - j
+                  - 1
+            result_variable:
+              value: j_plus_1
+            next:
+              value: step_do_shift
+- has:
+    step_do_shift:
+      type: computer/algorithm/assign_indexed
+      as:
+        - computer/algorithm/assign_indexed:
+            description:
+              value: "shift element one position right"
+            container:
+              value: array
+            index:
+              value: j_plus_1
+            from:
+              value: "array[j]"
+            next:
+              value: step_decrement_j
+- has:
+    step_decrement_j:
+      type: computer/algorithm/evaluate_expression
+      as:
+        - computer/algorithm/evaluate_expression:
+            description:
+              value: "move to previous element"
+            expression_yaml:
+              value: |
+                math/algebra/operation/subtract:
+                  - j
+                  - 1
+            result_variable:
+              value: j
+- has:
+    step_place_key:
+      type: computer/algorithm/evaluate_expression
+      as:
+        - computer/algorithm/evaluate_expression:
+            description:
+              value: "compute insertion position"
+            expression_yaml:
+              value: |
+                math/algebra/operation/add:
+                  - j
+                  - 1
+            result_variable:
+              value: j_plus_1
+            next:
+              value: step_insert_key
+- has:
+    step_insert_key:
+      type: computer/algorithm/assign_indexed
+      as:
+        - computer/algorithm/assign_indexed:
+            description:
+              value: "place key at correct position"
+            container:
+              value: array
+            index:
+              value: j_plus_1
+            from:
+              value: key
+- has:
+    step_return:
+      type: computer/algorithm/return
+      as:
+        - computer/algorithm/return:
+            description:
+              value: "return sorted array"
+            variable:
+              value: array
