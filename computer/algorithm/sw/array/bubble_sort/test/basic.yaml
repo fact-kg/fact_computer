@@ -5,7 +5,7 @@
           description:
             value: "Sort [3, 1, 4, 1, 5, 9, 2, 6]"
           subject:
-            value: computer/algorithm/array/selection_sort
+            value: computer/algorithm/sw/array/bubble_sort
           expected_result:
             value: [1, 1, 2, 3, 4, 5, 6, 9]
 - has:

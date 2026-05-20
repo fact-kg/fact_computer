@@ -3,12 +3,12 @@
     as:
       - computer/test/case:
           description:
-            value: "Reverse sorted array"
+            value: "Single element array"
           subject:
-            value: computer/algorithm/array/bubble_sort
+            value: computer/algorithm/sw/array/insertion_sort
           expected_result:
-            value: [1, 2, 3, 4, 5]
+            value: [42]
 - has:
     array:
       type: list
-      value: [5, 4, 3, 2, 1]
+      value: [42]

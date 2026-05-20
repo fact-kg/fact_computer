@@ -5,7 +5,7 @@
           description:
             value: "Array with negative numbers"
           subject:
-            value: computer/algorithm/array/find_max
+            value: computer/algorithm/sw/array/find_max
           expected_result:
             value: -1
 - has:

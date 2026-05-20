@@ -5,7 +5,7 @@
           description:
             value: "Array with duplicate maximum"
           subject:
-            value: computer/algorithm/array/find_max
+            value: computer/algorithm/sw/array/find_max
           expected_result:
             value: 7
 - has:

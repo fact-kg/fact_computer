@@ -3,12 +3,12 @@
     as:
       - computer/test/case:
           description:
-            value: "Single element array"
+            value: "Already sorted array"
           subject:
-            value: computer/algorithm/array/insertion_sort
+            value: computer/algorithm/sw/array/insertion_sort
           expected_result:
-            value: [42]
+            value: [1, 2, 3, 4, 5]
 - has:
     array:
       type: list
-      value: [42]
+      value: [1, 2, 3, 4, 5]

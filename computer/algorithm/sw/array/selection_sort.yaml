@@ -109,12 +109,12 @@
             description:
               value: "find minimum in unsorted portion"
             algorithm:
-              value: computer/algorithm/array/find_min_index
+              value: computer/algorithm/sw/array/find_min_index
             result_variable:
               value: min_idx
             next:
               value: step_swap_save
-        - computer/algorithm/array/find_min_index:
+        - computer/algorithm/sw/array/find_min_index:
             input:
               as:
                 - computer/sw/adt/slice:

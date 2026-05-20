@@ -5,7 +5,7 @@
           description:
             value: "Single element"
           subject:
-            value: computer/algorithm/array/selection_sort
+            value: computer/algorithm/sw/array/selection_sort
           expected_result:
             value: [42]
 - has:
