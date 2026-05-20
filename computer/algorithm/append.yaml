@@ -4,11 +4,8 @@
     description:
       type: str
 - has:
-    condition_yaml:
+    list:
       type: str
 - has:
-    then:
-      type: str
-- has:
-    else:
+    value:
       type: str

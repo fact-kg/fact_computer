@@ -6,7 +6,13 @@
       value: "Find maximum element in an array"
 - has:
     input_array:
-      type: list
+      type: math/variable
+      as:
+        - math/variable:
+            data_type:
+              value: list
+            description:
+              value: "input array to search"
 - has:
     i:
       type: math/variable

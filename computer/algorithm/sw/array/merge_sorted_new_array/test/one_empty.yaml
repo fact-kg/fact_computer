@@ -1,0 +1,18 @@
+- is:
+    type: computer/test/case
+    as:
+      - computer/test/case:
+          description:
+            value: "Merge [1, 2, 3] with empty"
+          subject:
+            value: computer/algorithm/sw/array/merge_sorted_new_array
+          expected_result:
+            value: [1, 2, 3]
+- has:
+    left:
+      type: list
+      value: [1, 2, 3]
+- has:
+    right:
+      type: list
+      value: []

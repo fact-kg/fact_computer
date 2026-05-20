@@ -6,7 +6,13 @@
       value: "Sort array in ascending order using selection sort"
 - has:
     array:
-      type: list
+      type: math/variable
+      as:
+        - math/variable:
+            data_type:
+              value: list
+            description:
+              value: "array to sort"
 - has:
     i:
       type: math/variable

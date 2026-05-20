@@ -1,0 +1,18 @@
+- is:
+    type: computer/test/case
+    as:
+      - computer/test/case:
+          description:
+            value: "Merge [1, 3, 5] and [2, 4, 6]"
+          subject:
+            value: computer/algorithm/sw/array/merge_sorted_new_array
+          expected_result:
+            value: [1, 2, 3, 4, 5, 6]
+- has:
+    left:
+      type: list
+      value: [1, 3, 5]
+- has:
+    right:
+      type: list
+      value: [2, 4, 6]
