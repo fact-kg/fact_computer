@@ -1,0 +1,265 @@
+- is:
+    type: computer/algorithm
+- has:
+    description:
+      type: str
+      value: "Sort array using iterative bottom-up merge sort"
+- has:
+    array:
+      type: math/variable
+      as:
+        - math/variable:
+            data_type:
+              value: list
+            description:
+              value: "array to sort"
+- has:
+    width:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "current merge width, doubles each pass"
+- has:
+    array_len:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "length of array bound"
+- has:
+    double_width:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "stride for inner loop, 2 * width"
+- has:
+    start:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "start index of merge region"
+- has:
+    mid:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "midpoint between left and right regions"
+- has:
+    end_val:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "end index of merge region"
+- has:
+    precondition:
+      type: computer/algorithm/precondition
+      as:
+        - computer/algorithm/precondition:
+            condition:
+              value: "len(array) > 0"
+- has:
+    postcondition:
+      type: computer/algorithm/postcondition
+      as:
+        - computer/algorithm/postcondition:
+            condition:
+              value: "for all i in 0..len(array)-2: array[i] <= array[i+1]"
+- has:
+    rationale:
+      type: computer/algorithm/rationale
+      as:
+        - computer/algorithm/rationale:
+            rationale_yaml:
+              value: |
+                understanding:
+                  problem: "sort elements in ascending order"
+                  constraints: ["can compare two elements", "can merge sorted sequences"]
+                planning:
+                  observation: "single elements are trivially sorted"
+                  insight: "merge adjacent sorted pairs, double the width each pass"
+                  question: "how to avoid recursion?"
+                  conclusion: "iterate bottom-up: width 1, 2, 4, 8... until entire array is sorted"
+                alternatives:
+                  - name: "recursive merge sort"
+                    tradeoff: "simpler to understand but uses O(log n) stack space"
+                  - name: "quicksort"
+                    tradeoff: "faster average case but O(n^2) worst case"
+- has:
+    step_init_width:
+      type: computer/algorithm/assign
+      as:
+        - computer/algorithm/assign:
+            description:
+              value: "start with single-element merges"
+            variable:
+              value: width
+            from:
+              value: 1
+            next:
+              value: step_compute_len
+- has:
+    step_compute_len:
+      type: computer/algorithm/evaluate_expression
+      as:
+        - computer/algorithm/evaluate_expression:
+            description:
+              value: "compute array length"
+            expression_yaml:
+              value: |
+                math/algebra/operation/length:
+                  - array
+            result_variable:
+              value: array_len
+            next:
+              value: step_outer_loop
+- has:
+    step_outer_loop:
+      type: computer/algorithm/while
+      as:
+        - computer/algorithm/while:
+            description:
+              value: "double width until entire array merged"
+            condition_yaml:
+              value: |
+                math/algebra/operation/less_than:
+                  - width
+                  - array_len
+            body:
+              value: step_compute_stride
+            next:
+              value: step_return
+- has:
+    step_compute_stride:
+      type: computer/algorithm/evaluate_expression
+      as:
+        - computer/algorithm/evaluate_expression:
+            description:
+              value: "compute stride = 2 * width"
+            expression_yaml:
+              value: |
+                math/algebra/operation/multiply:
+                  - 2
+                  - width
+            result_variable:
+              value: double_width
+            next:
+              value: step_inner_loop
+- has:
+    step_inner_loop:
+      type: computer/algorithm/indexed/for_each
+      as:
+        - computer/algorithm/indexed/for_each:
+            description:
+              value: "merge adjacent pairs"
+            index:
+              value: start
+            from:
+              value: 0
+            to:
+              value: array_len
+            stride:
+              value: double_width
+            body:
+              value: step_compute_mid
+            next:
+              value: step_double_width
+- has:
+    step_compute_mid:
+      type: computer/algorithm/evaluate_expression
+      as:
+        - computer/algorithm/evaluate_expression:
+            description:
+              value: "compute mid = min(start + width, array_len)"
+            expression_yaml:
+              value: |
+                math/expression/conditional:
+                  condition:
+                    math/algebra/operation/less_than:
+                      - math/algebra/operation/add:
+                          - start
+                          - width
+                      - array_len
+                  then:
+                    math/algebra/operation/add:
+                      - start
+                      - width
+                  else:
+                    array_len
+            result_variable:
+              value: mid
+            next:
+              value: step_compute_end
+- has:
+    step_compute_end:
+      type: computer/algorithm/evaluate_expression
+      as:
+        - computer/algorithm/evaluate_expression:
+            description:
+              value: "compute end = min(start + 2*width, array_len)"
+            expression_yaml:
+              value: |
+                math/expression/conditional:
+                  condition:
+                    math/algebra/operation/less_than:
+                      - math/algebra/operation/add:
+                          - start
+                          - double_width
+                      - array_len
+                  then:
+                    math/algebra/operation/add:
+                      - start
+                      - double_width
+                  else:
+                    array_len
+            result_variable:
+              value: end_val
+            next:
+              value: step_do_merge
+- has:
+    step_do_merge:
+      type: computer/algorithm/call
+      as:
+        - computer/algorithm/call:
+            description:
+              value: "merge two adjacent sorted regions"
+            algorithm:
+              value: computer/algorithm/sw/array/merge_sorted_in_place
+            result_variable:
+              value: array
+        - computer/algorithm/sw/array/merge_sorted_in_place:
+            array:
+              value: array
+            start:
+              value: start
+            mid:
+              value: mid
+            end:
+              value: end_val
+- has:
+    step_double_width:
+      type: computer/algorithm/evaluate_expression
+      as:
+        - computer/algorithm/evaluate_expression:
+            description:
+              value: "double the width for next pass"
+            expression_yaml:
+              value: |
+                math/algebra/operation/multiply:
+                  - width
+                  - 2
+            result_variable:
+              value: width
+- has:
+    step_return:
+      type: computer/algorithm/return
+      as:
+        - computer/algorithm/return:
+            description:
+              value: "return sorted array"
+            variable:
+              value: array

@@ -16,5 +16,8 @@
     to_length:
       type: str
 - has:
+    stride:
+      type: num
+- has:
     body:
       type: str
