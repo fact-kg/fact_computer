@@ -1,0 +1,391 @@
+- is:
+    type: computer/algorithm
+- has:
+    description:
+      type: str
+      value: "Merge two adjacent sorted regions within an array"
+- has:
+    array:
+      type: math/variable
+      as:
+        - math/variable:
+            data_type:
+              value: list
+            description:
+              value: "array containing two adjacent sorted regions"
+- has:
+    start:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "start index of left sorted region, inclusive"
+- has:
+    mid:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "start index of right sorted region, exclusive end of left"
+- has:
+    end:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "exclusive end index of right sorted region"
+- has:
+    temp:
+      type: math/variable
+      as:
+        - math/variable:
+            data_type:
+              value: list
+            description:
+              value: "temporary buffer for merging"
+- has:
+    i:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "index into left region"
+- has:
+    j:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "index into right region"
+- has:
+    k:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "index for copying back to array"
+- has:
+    precondition:
+      type: computer/algorithm/precondition
+      as:
+        - computer/algorithm/precondition:
+            condition:
+              value: "array[start..mid) is sorted AND array[mid..end) is sorted"
+- has:
+    postcondition:
+      type: computer/algorithm/postcondition
+      as:
+        - computer/algorithm/postcondition:
+            condition:
+              value: "array[start..end) is sorted"
+- has:
+    step_init_temp:
+      type: computer/algorithm/assign
+      as:
+        - computer/algorithm/assign:
+            description:
+              value: "create empty temp buffer"
+            variable:
+              value: temp
+            from:
+              value: "[]"
+            next:
+              value: step_init_i
+- has:
+    step_init_i:
+      type: computer/algorithm/assign
+      as:
+        - computer/algorithm/assign:
+            description:
+              value: "initialize left index"
+            variable:
+              value: i
+            from:
+              value: start
+            next:
+              value: step_init_j
+- has:
+    step_init_j:
+      type: computer/algorithm/assign
+      as:
+        - computer/algorithm/assign:
+            description:
+              value: "initialize right index"
+            variable:
+              value: j
+            from:
+              value: mid
+            next:
+              value: step_merge_loop
+- has:
+    step_merge_loop:
+      type: computer/algorithm/while
+      as:
+        - computer/algorithm/while:
+            description:
+              value: "while both regions have elements"
+            condition_yaml:
+              value: |
+                math/algebra/operation/and:
+                  - math/algebra/operation/less_than:
+                      - i
+                      - mid
+                  - math/algebra/operation/less_than:
+                      - j
+                      - end
+            body:
+              value: step_compare
+            next:
+              value: step_drain_left
+- has:
+    step_compare:
+      type: computer/algorithm/if
+      as:
+        - computer/algorithm/if:
+            description:
+              value: "pick smaller element"
+            condition_yaml:
+              value: |
+                math/algebra/operation/less_equal:
+                  - array[i]
+                  - array[j]
+            then:
+              value: step_take_left
+            else:
+              value: step_take_right
+- has:
+    step_take_left:
+      type: computer/algorithm/append
+      as:
+        - computer/algorithm/append:
+            description:
+              value: "take from left region"
+            list:
+              value: temp
+            value:
+              value: "array[i]"
+            next:
+              value: step_inc_i
+- has:
+    step_inc_i:
+      type: computer/algorithm/evaluate_expression
+      as:
+        - computer/algorithm/evaluate_expression:
+            description:
+              value: "advance left index"
+            expression_yaml:
+              value: |
+                math/algebra/operation/add:
+                  - i
+                  - 1
+            result_variable:
+              value: i
+- has:
+    step_take_right:
+      type: computer/algorithm/append
+      as:
+        - computer/algorithm/append:
+            description:
+              value: "take from right region"
+            list:
+              value: temp
+            value:
+              value: "array[j]"
+            next:
+              value: step_inc_j
+- has:
+    step_inc_j:
+      type: computer/algorithm/evaluate_expression
+      as:
+        - computer/algorithm/evaluate_expression:
+            description:
+              value: "advance right index"
+            expression_yaml:
+              value: |
+                math/algebra/operation/add:
+                  - j
+                  - 1
+            result_variable:
+              value: j
+- has:
+    step_drain_left:
+      type: computer/algorithm/while
+      as:
+        - computer/algorithm/while:
+            description:
+              value: "drain remaining left elements"
+            condition_yaml:
+              value: |
+                math/algebra/operation/less_than:
+                  - i
+                  - mid
+            body:
+              value: step_drain_left_append
+            next:
+              value: step_drain_right
+- has:
+    step_drain_left_append:
+      type: computer/algorithm/append
+      as:
+        - computer/algorithm/append:
+            description:
+              value: "append remaining left element"
+            list:
+              value: temp
+            value:
+              value: "array[i]"
+            next:
+              value: step_drain_left_inc
+- has:
+    step_drain_left_inc:
+      type: computer/algorithm/evaluate_expression
+      as:
+        - computer/algorithm/evaluate_expression:
+            description:
+              value: "advance left index"
+            expression_yaml:
+              value: |
+                math/algebra/operation/add:
+                  - i
+                  - 1
+            result_variable:
+              value: i
+- has:
+    step_drain_right:
+      type: computer/algorithm/while
+      as:
+        - computer/algorithm/while:
+            description:
+              value: "drain remaining right elements"
+            condition_yaml:
+              value: |
+                math/algebra/operation/less_than:
+                  - j
+                  - end
+            body:
+              value: step_drain_right_append
+            next:
+              value: step_copy_back
+- has:
+    step_drain_right_append:
+      type: computer/algorithm/append
+      as:
+        - computer/algorithm/append:
+            description:
+              value: "append remaining right element"
+            list:
+              value: temp
+            value:
+              value: "array[j]"
+            next:
+              value: step_drain_right_inc
+- has:
+    step_drain_right_inc:
+      type: computer/algorithm/evaluate_expression
+      as:
+        - computer/algorithm/evaluate_expression:
+            description:
+              value: "advance right index"
+            expression_yaml:
+              value: |
+                math/algebra/operation/add:
+                  - j
+                  - 1
+            result_variable:
+              value: j
+- has:
+    step_copy_back:
+      type: computer/algorithm/assign
+      as:
+        - computer/algorithm/assign:
+            description:
+              value: "initialize array copy index"
+            variable:
+              value: k
+            from:
+              value: start
+            next:
+              value: step_init_copy_i
+- has:
+    step_init_copy_i:
+      type: computer/algorithm/assign
+      as:
+        - computer/algorithm/assign:
+            description:
+              value: "initialize temp index"
+            variable:
+              value: i
+            from:
+              value: 0
+            next:
+              value: step_copy_loop
+- has:
+    step_copy_loop:
+      type: computer/algorithm/while
+      as:
+        - computer/algorithm/while:
+            description:
+              value: "copy temp back to array"
+            condition_yaml:
+              value: |
+                math/algebra/operation/less_than:
+                  - k
+                  - end
+            body:
+              value: step_copy_element
+            next:
+              value: step_return
+- has:
+    step_copy_element:
+      type: computer/algorithm/assign_indexed
+      as:
+        - computer/algorithm/assign_indexed:
+            description:
+              value: "copy element back"
+            container:
+              value: array
+            index:
+              value: k
+            from:
+              value: "temp[i]"
+            next:
+              value: step_copy_inc_k
+- has:
+    step_copy_inc_k:
+      type: computer/algorithm/evaluate_expression
+      as:
+        - computer/algorithm/evaluate_expression:
+            description:
+              value: "advance array index"
+            expression_yaml:
+              value: |
+                math/algebra/operation/add:
+                  - k
+                  - 1
+            result_variable:
+              value: k
+            next:
+              value: step_copy_inc_i
+- has:
+    step_copy_inc_i:
+      type: computer/algorithm/evaluate_expression
+      as:
+        - computer/algorithm/evaluate_expression:
+            description:
+              value: "advance temp index"
+            expression_yaml:
+              value: |
+                math/algebra/operation/add:
+                  - i
+                  - 1
+            result_variable:
+              value: i
+- has:
+    step_return:
+      type: computer/algorithm/return
+      as:
+        - computer/algorithm/return:
+            description:
+              value: "return modified array"
+            variable:
+              value: array

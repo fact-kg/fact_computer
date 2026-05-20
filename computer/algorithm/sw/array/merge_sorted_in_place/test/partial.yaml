@@ -1,0 +1,26 @@
+- is:
+    type: computer/test/case
+    as:
+      - computer/test/case:
+          description:
+            value: "Merge middle region [5,1,3,2,4,7] start=1 mid=3 end=5"
+          subject:
+            value: computer/algorithm/sw/array/merge_sorted_in_place
+          expected_result:
+            value: [5, 1, 2, 3, 4, 7]
+- has:
+    array:
+      type: list
+      value: [5, 1, 3, 2, 4, 7]
+- has:
+    start:
+      type: num
+      value: 1
+- has:
+    mid:
+      type: num
+      value: 3
+- has:
+    end:
+      type: num
+      value: 5

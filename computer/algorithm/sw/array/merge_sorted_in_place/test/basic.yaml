@@ -1,0 +1,26 @@
+- is:
+    type: computer/test/case
+    as:
+      - computer/test/case:
+          description:
+            value: "Merge [1,3,5, 2,4,6] with mid=3"
+          subject:
+            value: computer/algorithm/sw/array/merge_sorted_in_place
+          expected_result:
+            value: [1, 2, 3, 4, 5, 6]
+- has:
+    array:
+      type: list
+      value: [1, 3, 5, 2, 4, 6]
+- has:
+    start:
+      type: num
+      value: 0
+- has:
+    mid:
+      type: num
+      value: 3
+- has:
+    end:
+      type: num
+      value: 6
