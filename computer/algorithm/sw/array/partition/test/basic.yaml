@@ -1,0 +1,17 @@
+- is:
+    type: computer/test/case
+    as:
+      - computer/test/case:
+          description:
+            value: "Partition [3,6,8,10,1,2,1] around pivot 1"
+          subject:
+            value: computer/algorithm/sw/array/partition
+          expected_result:
+            value: 1
+- has:
+    input:
+      type: computer/sw/adt/slice
+      value:
+        array: [3, 6, 8, 10, 1, 2, 1]
+        from: 0
+        to: 7

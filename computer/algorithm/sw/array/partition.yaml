@@ -1,0 +1,257 @@
+- is:
+    type: computer/algorithm
+- has:
+    description:
+      type: str
+      value: "Lomuto partition: rearrange elements around a pivot"
+- has:
+    input:
+      type: computer/sw/adt/slice
+- has:
+    pivot:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "pivot element, last element in range"
+- has:
+    i:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "boundary index of less-than-pivot region"
+- has:
+    j:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "scan index"
+- has:
+    last_idx:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "index of last element (pivot position)"
+- has:
+    temp:
+      type: math/variable
+      as:
+        - math/variable:
+            description:
+              value: "temporary storage for swap"
+- has:
+    precondition:
+      type: computer/algorithm/precondition
+      as:
+        - computer/algorithm/precondition:
+            condition:
+              value: "input.from < input.to"
+- has:
+    postcondition:
+      type: computer/algorithm/postcondition
+      as:
+        - computer/algorithm/postcondition:
+            condition:
+              value: "all elements in input.array[input.from..return_val] <= pivot AND all elements in input.array[return_val+1..input.to] > pivot"
+- has:
+    rationale:
+      type: knowledge/rationale
+      as:
+        - knowledge/rationale:
+            rationale_yaml:
+              value: |
+                understanding:
+                  problem: "rearrange array so smaller elements are left of pivot"
+                  constraints: ["can compare elements", "can swap elements", "in-place"]
+                planning:
+                  observation: "pick last element as pivot"
+                  insight: "maintain a boundary i; scan with j; if element <= pivot, swap it to position i and advance i"
+                  conclusion: "after scan, swap pivot to position i; everything left is <= pivot"
+                alternatives:
+                  - name: "Hoare partition"
+                    tradeoff: "fewer swaps on average but harder to implement correctly"
+- has:
+    step_compute_last:
+      type: computer/algorithm/evaluate_expression
+      as:
+        - computer/algorithm/evaluate_expression:
+            description:
+              value: "compute last element index"
+            expression_yaml:
+              value: |
+                math/algebra/operation/subtract:
+                  - input.to
+                  - 1
+            result_variable:
+              value: last_idx
+            next:
+              value: step_get_pivot
+- has:
+    step_get_pivot:
+      type: computer/algorithm/assign
+      as:
+        - computer/algorithm/assign:
+            description:
+              value: "pick last element as pivot"
+            variable:
+              value: pivot
+            from:
+              value: "input.array[last_idx]"
+            next:
+              value: step_init_i
+- has:
+    step_init_i:
+      type: computer/algorithm/assign
+      as:
+        - computer/algorithm/assign:
+            description:
+              value: "initialize boundary at start of range"
+            variable:
+              value: i
+            from:
+              value: "input.from"
+            next:
+              value: step_scan_loop
+- has:
+    step_scan_loop:
+      type: computer/algorithm/indexed/for_each
+      as:
+        - computer/algorithm/indexed/for_each:
+            description:
+              value: "scan elements before pivot"
+            index:
+              value: j
+            from:
+              value: input.from
+            to:
+              value: last_idx
+            body:
+              value: step_compare
+            next:
+              value: step_place_pivot
+- has:
+    step_compare:
+      type: computer/algorithm/if
+      as:
+        - computer/algorithm/if:
+            description:
+              value: "if element <= pivot, swap to boundary"
+            condition_yaml:
+              value: |
+                math/algebra/operation/less_equal:
+                  - input.array[j]
+                  - pivot
+            then:
+              value: step_swap_to_boundary
+- has:
+    step_swap_to_boundary:
+      type: computer/algorithm/assign
+      as:
+        - computer/algorithm/assign:
+            description:
+              value: "save boundary element"
+            variable:
+              value: temp
+            from:
+              value: "input.array[i]"
+            next:
+              value: step_swap_j_to_i
+- has:
+    step_swap_j_to_i:
+      type: computer/algorithm/assign_indexed
+      as:
+        - computer/algorithm/assign_indexed:
+            description:
+              value: "move current element to boundary"
+            container:
+              value: input.array
+            index:
+              value: i
+            from:
+              value: "input.array[j]"
+            next:
+              value: step_swap_temp_to_j
+- has:
+    step_swap_temp_to_j:
+      type: computer/algorithm/assign_indexed
+      as:
+        - computer/algorithm/assign_indexed:
+            description:
+              value: "move saved element to current position"
+            container:
+              value: input.array
+            index:
+              value: j
+            from:
+              value: temp
+            next:
+              value: step_advance_i
+- has:
+    step_advance_i:
+      type: computer/algorithm/evaluate_expression
+      as:
+        - computer/algorithm/evaluate_expression:
+            description:
+              value: "advance boundary"
+            expression_yaml:
+              value: |
+                math/algebra/operation/add:
+                  - i
+                  - 1
+            result_variable:
+              value: i
+- has:
+    step_place_pivot:
+      type: computer/algorithm/assign
+      as:
+        - computer/algorithm/assign:
+            description:
+              value: "save element at boundary"
+            variable:
+              value: temp
+            from:
+              value: "input.array[i]"
+            next:
+              value: step_pivot_to_i
+- has:
+    step_pivot_to_i:
+      type: computer/algorithm/assign_indexed
+      as:
+        - computer/algorithm/assign_indexed:
+            description:
+              value: "move pivot to boundary position"
+            container:
+              value: input.array
+            index:
+              value: i
+            from:
+              value: "input.array[last_idx]"
+            next:
+              value: step_temp_to_last
+- has:
+    step_temp_to_last:
+      type: computer/algorithm/assign_indexed
+      as:
+        - computer/algorithm/assign_indexed:
+            description:
+              value: "move saved element to pivot's old position"
+            container:
+              value: input.array
+            index:
+              value: last_idx
+            from:
+              value: temp
+            next:
+              value: step_return
+- has:
+    step_return:
+      type: computer/algorithm/return
+      as:
+        - computer/algorithm/return:
+            description:
+              value: "return pivot's final index"
+            variable:
+              value: i

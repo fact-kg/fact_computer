@@ -1,0 +1,7 @@
+- is: pair of two values
+- has:
+    first:
+      type: str
+- has:
+    second:
+      type: str
