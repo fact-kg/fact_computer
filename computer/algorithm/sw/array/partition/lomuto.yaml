@@ -70,6 +70,12 @@
                   observation: "pick last element as pivot"
                   insight: "maintain a boundary i; scan with j; if element <= pivot, swap it to position i and advance i"
                   conclusion: "after scan, swap pivot to position i; everything left is <= pivot"
+                why_it_matters:
+                  key_property: "pivot lands in its final sorted position in O(n) work"
+                  consequence: "each subsequent call works on a strictly smaller subarray"
+                  average_case: "pivot lands near middle, halving the problem each time, giving O(n log n) total"
+                  worst_case: "pivot always lands at extreme (e.g. sorted input), degrades to O(n^2)"
+                  mitigation: "random pivot or median-of-three selection avoids worst case"
                 alternatives:
                   - name: "Hoare partition"
                     tradeoff: "fewer swaps on average but harder to implement correctly"
